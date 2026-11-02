@@ -1,0 +1,58 @@
+/* V5: content-safe rectangular 3D prism, with space for complete tool tags.
+   A face is taller than it is wide; cube depth still follows its width. */
+.atlas-viewport {
+  --cube-height: calc(var(--cube-size) + 100px);
+  height: var(--cube-height);
+}
+.atlas-cube-face {
+  gap: 7px;
+  /* These elements have intrinsic text height. Do not compress the tool row. */
+}
+.atlas-face-header,
+.atlas-face-diagram-wrap,
+.atlas-face-copy,
+.atlas-face-tech { flex-shrink: 0; }
+/* Top and bottom panels need to remain aligned with the prism's center. */
+.atlas-cube-cap {
+  top: calc((var(--cube-height) - var(--cube-size)) / 2);
+}
+/* Give the taller object room before the completely separate button grid. */
+.atlas-scene.atlas-scene-v3 { height: 430px; min-height: 430px; }
+@media (max-width: 900px) {
+  .atlas-scene.atlas-scene-v3 { height: 446px; min-height: 446px; }
+}
+@media (max-width: 640px) {
+  .atlas-viewport { --cube-height: calc(var(--cube-size) + 106px); }
+  .atlas-scene.atlas-scene-v3 { height: 400px; min-height: 400px; }
+}
+@media (max-width: 390px) {
+  .atlas-viewport { --cube-height: calc(var(--cube-size) + 110px); }
+  .atlas-scene.atlas-scene-v3 { height: 376px; min-height: 376px; }
+}
+@media (max-width: 340px) {
+  .atlas-viewport { --cube-height: calc(var(--cube-size) + 116px); }
+  .atlas-scene.atlas-scene-v3 { height: 366px; min-height: 366px; }
+}
+/* The older selector targeted every last-child SVG, including the icon
+   INSIDE each square. Only the direct child arrow may slide right. */
+.atlas-choice.atlas-node .atlas-node-icon {
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+.atlas-choice.atlas-node .atlas-node-icon > svg:last-child,
+.atlas-choice.atlas-node:hover .atlas-node-icon > svg:last-child,
+.atlas-choice.atlas-node.is-active .atlas-node-icon > svg:last-child {
+  display: block;
+  margin: 0;
+  transform: none;
+  justify-self: center;
+  align-self: center;
+}
+.atlas-choice.atlas-node > svg:last-child { margin-left: auto; }
+/* Keep the section caption clear of the taller prism's upper edge. */
+.atlas-topline { margin-bottom: 18px; }
+@media (max-width: 340px) {
+  /* Prevent the animated outer orbit from widening a 280px viewport. */
+  .atlas-ambient-one { width: 260px; height: 260px; margin: -130px 0 0 -130px; }
+}
