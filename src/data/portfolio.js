@@ -13,6 +13,18 @@ export const person = {
 
 export const projects = [
   {
+    id: 'accident-prediction',
+    number: '11', title: 'Dashcam Risk Review', subtitle: 'Roadframe / Collision Anticipation',
+    short: 'A browser-based dashcam studio that visualizes how a collision anticipation model scores an unfolding road scene.',
+    category: 'Machine Learning', tags: ['Computer Vision', 'PyTorch', 'ONNX', 'React'],
+    year: '2026', featured: true, art: 'roadframe',
+    context: 'Independent computer vision project',
+    challenge: 'Can the seconds before a collision or near miss provide a useful signal, and how often does a model find similar patterns in normal driving?',
+    approach: 'Trained a ResNet-18 and GRU on pre-event Nexar clips, kept source videos in separate splits, and compared the temporal model with a single-frame baseline. Exported the model for browser inference and built a synchronized player for recordings and live camera input.',
+    outcome: 'On 224 held-out videos, the temporal model reached 0.746 mean average precision across three lead times, compared with 0.727 for the single-frame baseline. Continuous footage exposed a high false-alarm rate, so the demo focuses on reviewing scores and their context.',
+    links: [{ label: 'Nexar dataset', url: 'https://huggingface.co/datasets/nexar-ai/nexar_collision_prediction' }],
+  },
+  {
     id: 'multi-agent-rescue',
     number: '01',
     title: 'Autonomous Rescue Agents',

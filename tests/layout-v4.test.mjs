@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {readFileSync} from 'node:fs'
-const atlas = readFileSync(new URL('../src/components/ExpertiseAtlas.jsx',import.meta.url),'utf8')
+const atlas = readFileSync(new URL('../src/components/ExpertiseAtlas.jsx',import.meta.url),'utf8').replaceAll('\r\n','\n')
 const css = readFileSync(new URL('../src/motion-v4.css',import.meta.url),'utf8')
 const app = readFileSync(new URL('../src/App.jsx',import.meta.url),'utf8')
 
