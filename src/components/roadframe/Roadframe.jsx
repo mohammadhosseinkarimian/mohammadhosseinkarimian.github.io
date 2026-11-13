@@ -73,7 +73,7 @@ function Timeline({ rows, time, duration, live, seek, impact }) {
 
 export default function Roadframe() {
   const video = useRef(null), input = useRef(null), player = useRef(null)
-  const job = useRef(null)
+  const job = useRef(null), pendingSeek = useRef(null)
   const [source, setSource] = useState({ kind: 'sample', name: samples[0].title, id: samples[0].id })
   const [rows, setRows] = useState([])
   const [time, setTime] = useState(0), [duration, setDuration] = useState(0)
@@ -99,6 +99,7 @@ export default function Roadframe() {
     }
     job.current = current
     const element = video.current
+    pendingSeek.current = null
     element.pause()
     element.srcObject = null
     element.removeAttribute('src')
@@ -283,10 +284,14 @@ export default function Roadframe() {
   }
 
   function seek(timestamp) {
-    if (!live && Number.isFinite(video.current.duration)) {
-      video.current.currentTime = Math.min(video.current.duration, Math.max(0, timestamp))
-      setTime(video.current.currentTime)
+    if (live) return
+    const element = video.current
+    if (!Number.isFinite(element.duration)) {
+      pendingSeek.current = timestamp
+      return
     }
+    element.currentTime = Math.min(element.duration, Math.max(0, timestamp))
+    setTime(element.currentTime)
   }
 
   function download() {
@@ -314,7 +319,13 @@ export default function Roadframe() {
           <div className="rf-video">
             <video ref={video} playsInline muted controls={!live} preload="metadata"
               poster={source.id ? asset(source.id + '.jpg') : undefined}
-              onLoadedMetadata={event => setDuration(Number.isFinite(event.currentTarget.duration) ? event.currentTarget.duration : 0)}
+              onLoadedMetadata={event => {
+                setDuration(Number.isFinite(event.currentTarget.duration) ? event.currentTarget.duration : 0)
+                if (pendingSeek.current !== null) {
+                  seek(pendingSeek.current)
+                  pendingSeek.current = null
+                }
+              }}
               onTimeUpdate={event => { if (!live) setTime(event.currentTarget.currentTime) }}
               onSeeked={event => { if (!live) setTime(event.currentTarget.currentTime) }}
               onError={() => { if (!live && video.current?.hasAttribute('src')) { setFailure(true); setStatus('This video could not play. Try an H.264 MP4.') } }}/>
