@@ -13,6 +13,21 @@ export const person = {
 
 export const projects = [
   {
+    id: 'find-products',
+    number: '12', title: 'Find Products', subtitle: 'Camera Search / Product Discovery',
+    short: 'A camera search tool that highlights words on packaging and connects readable labels to product information.',
+    category: 'Machine Learning', tags: ['Computer Vision', 'OCR', 'ONNX', 'React'],
+    year: '2026', featured: true, art: 'find-products',
+    context: 'Independent computer vision project',
+    challenge: 'Finding a brand, pack size or printed date on a crowded shelf means reading small text across many packages. Reflections and motion can make individual reads unreliable.',
+    approach: 'Fine-tuned a Latin-script OCR model on 250,000 scene-text and synthetic date crops. Combined text detection, a second recognizer and repeated camera reads. Added text and voice search, barcode lookup and a searchable Canadian product catalog.',
+    outcome: 'On 12,000 held-out text crops, exact matches improved from 28.2% to 67.0% using the same preprocessing. The browser demo uses the trained model and a second reader. Its live shelf accuracy is still being evaluated.',
+    links: [
+      { label: 'TextOCR dataset', url: 'https://textvqa.org/textocr/dataset/' },
+      { label: 'Open Food Facts', url: 'https://world.openfoodfacts.org/' },
+    ],
+  },
+  {
     id: 'accident-prediction',
     number: '11', title: 'Dashcam Risk Review', subtitle: 'Roadframe / Collision Anticipation',
     short: 'A browser-based dashcam studio that visualizes how a collision anticipation model scores an unfolding road scene.',

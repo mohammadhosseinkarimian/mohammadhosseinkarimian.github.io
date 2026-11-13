@@ -1,0 +1,25 @@
+{
+  "format": 1,
+  "alphabet": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ªÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿĀāĂăĄąĆćČčĎďĐđĒēĖėĘęĚěĞğĨĩĪīĮįİıĶķĹĺĻļĽľŁłŃńŅņŇňŒœŔŕŘřŚśŞşŠšŤťŨũŪūŮůŲųŸŹźŻżŽžƏƠơƯưȘșȚțə̇ḌḍḶḷṀṁṂṃṄṅṆṇṬṭẠạẢảẤấẦầẨẩẪẫẬậẮắẰằẲẳẴẵẶặẸẹẺẻẼẽẾếỀềỂểỄễỆệỈỉỊịỌọỎỏỐốỒồỔổỖỗỘộỚớỜờỞởỠỡỢợỤụỦủỨứỪừỬửỮữỰựỲỳỴỵỶỷỸỹ€",
+  "blank_index": 0,
+  "input": {
+    "name": "pixels",
+    "dtype": "uint8",
+    "shape": [
+      "batch",
+      1,
+      64,
+      256
+    ],
+    "preprocessing": "Grayscale, bicubic resize to height 64, width capped at 256, repeat final column."
+  },
+  "output": {
+    "name": "logits",
+    "shape": [
+      "batch",
+      "timesteps",
+      352
+    ]
+  },
+  "decoder": "Greedy CTC: collapse repeats then remove blank."
+}
