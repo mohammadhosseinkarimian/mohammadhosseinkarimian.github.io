@@ -14,12 +14,16 @@
 .rf-score b{font:600 11px var(--mono);margin-left:6px}.rf-score p{font-size:clamp(11px,1.3vw,15px);margin:5px 0 0}
 .rf-score i{display:block;height:3px;background:#ffffff30;border-radius:9px;overflow:hidden}.rf-score i i{background:var(--score-color);transition:width .18s}
 .rf-pulse{animation:rf-pulse 1.8s ease-in-out infinite}@keyframes rf-pulse{50%{box-shadow:0 0 22px #ff817b65}}
-.rf-panel:fullscreen{background:#101421;border:0;border-radius:0;display:flex;flex-direction:column}.rf-panel:fullscreen .rf-video{flex:1;min-height:0;aspect-ratio:auto}.rf-panel:fullscreen .rf-bar{color:#e7e9f2}
+.rf-player:is(:fullscreen,.rf-theater){background:#0c0e15;border:0;border-radius:0;display:flex;flex-direction:column;width:100%;height:100dvh;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.rf-player.rf-theater{position:fixed;inset:0;z-index:1000;margin:0;max-width:none;max-height:none}
+.rf-player:is(:fullscreen,.rf-theater) .rf-video{flex:1;min-height:0;aspect-ratio:auto}
+.rf-player:is(:fullscreen,.rf-theater) .rf-bar{flex:none;color:var(--text);background:var(--surface)}
 .roadframe button{font:600 12px/1.2 var(--display);color:var(--text);background:var(--surface2);padding:8px 10px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:background .18s,border-color .18s}
 .roadframe button:hover,.roadframe button[aria-pressed=true]{border-color:var(--accent);background:color-mix(in srgb,var(--surface2) 87%,var(--accent))}
 .roadframe button:disabled{opacity:.45;cursor:default}.roadframe button:focus-visible,.roadframe input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .roadframe .rf-primary{background:var(--accent);color:var(--on-accent);border-color:transparent}.roadframe .rf-primary:hover{background:color-mix(in srgb,var(--accent) 84%,white)}
 .rf-controls input{width:100%;min-width:15px;accent-color:var(--accent)}.rf-controls button{white-space:nowrap}
+@media(max-width:420px){.rf-controls{flex-wrap:wrap}.rf-controls input{order:1;flex-basis:100%;margin-inline:0}.rf-controls button:last-child{margin-inline-start:auto}}
 .rf-drop select{max-width:100%;padding:6px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font:12px var(--display)}
 .rf-chart{padding:0 10px 11px}.rf-chart svg{display:block;width:100%;height:clamp(135px,15vw,187px);cursor:crosshair}.rf-chart svg line{stroke:var(--border)}.rf-chart svg text{fill:var(--muted);font:13px var(--mono)}.rf-chart svg .rf-playhead{stroke:var(--text);stroke-opacity:.55}.rf-chart-note{display:flex;justify-content:space-between;gap:9px;padding-inline:5px}
 .rf-input{padding:14px}.rf-drop{display:grid;justify-items:center;gap:8px;margin-top:12px;border:1px dashed var(--border);border-radius:10px;padding:13px 7px;text-align:center;background:var(--surface2)}.rf-drop[data-drag=true]{border-color:var(--accent)}.rf-drop>strong{font:600 14px var(--display)}.rf-actions{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}

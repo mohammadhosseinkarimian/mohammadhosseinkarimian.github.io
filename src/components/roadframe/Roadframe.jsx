@@ -8,6 +8,7 @@ const samples = [
   { id: 'crash', title: 'Highway collision', description: 'Contains crash footage', impact: 9.2 },
 ]
 const STEP = 1 / 6
+const SCORE_HOLD = STEP + .055
 const palette = ['#77e4a2', '#f6db75', '#ffad69', '#ff817b']
 const labels = ['Low', 'Mild', 'Elevated', 'High']
 const stamp = (value = 0) => {
@@ -42,7 +43,7 @@ function Timeline({ rows, time, duration, live, seek, impact }) {
     return (index && !gap ? 'L' : 'M') + x(t) + ',' + y(score)
   }).join(' ')
   const head = hover ?? time
-  const point = shown.findLast(row => row.time <= head + 0.01 && head - row.time <= (live ? 2 : 0.55))
+  const point = shown.findLast(row => row.time <= head + 0.001 && head - row.time <= (live ? 2 : SCORE_HOLD))
   function pointer(event) {
     const box = ref.current.getBoundingClientRect()
     const svgX = (event.clientX - box.left) / box.width * width
@@ -81,6 +82,8 @@ export default function Roadframe() {
   const [scene, setScene] = useState('loading'), [lens, setLens] = useState('environment')
   const [cameras, setCameras] = useState([]), [deviceId, setDeviceId] = useState('')
   const [busy, setBusy] = useState(false), [drag, setDrag] = useState(false)
+  const [fullscreen, setFullscreen] = useState(false), [theater, setTheater] = useState(false)
+  const [playing, setPlaying] = useState(false), [muted, setMuted] = useState(true)
   const live = source.kind === 'camera'
 
   function stop() {
@@ -141,6 +144,71 @@ export default function Roadframe() {
     return () => { cancelAnimationFrame(initial); stop() }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    const changed = () => setFullscreen(document.fullscreenElement === player.current)
+    document.addEventListener('fullscreenchange', changed)
+    return () => document.removeEventListener('fullscreenchange', changed)
+  }, [])
+
+  useEffect(() => {
+    if (!theater) return undefined
+    const element = player.current
+    const popover = typeof element.showPopover === 'function'
+    if (popover) {
+      element.setAttribute('popover', 'manual')
+      element.showPopover()
+    }
+    const overflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const escape = event => { if (event.key === 'Escape') setTheater(false) }
+    document.addEventListener('keydown', escape)
+    return () => {
+      document.body.style.overflow = overflow
+      document.removeEventListener('keydown', escape)
+      if (popover) {
+        element.hidePopover()
+        element.removeAttribute('popover')
+      }
+    }
+  }, [theater])
+
+  useEffect(() => {
+    if (!playing || live) return undefined
+    const element = video.current
+    const videoFrames = typeof element.requestVideoFrameCallback === 'function'
+    let callback
+    const frame = (_now, metadata) => {
+      if (!element.seeking) setTime(metadata?.mediaTime ?? element.currentTime)
+      callback = schedule()
+    }
+    const schedule = () => videoFrames
+      ? element.requestVideoFrameCallback(frame) : requestAnimationFrame(frame)
+    callback = schedule()
+    return () => {
+      if (videoFrames) element.cancelVideoFrameCallback(callback)
+      else cancelAnimationFrame(callback)
+    }
+  }, [playing, live])
+
+  async function toggleFullscreen() {
+    if (theater) { setTheater(false); return }
+    if (fullscreen) { await document.exitFullscreen(); return }
+    if (player.current.requestFullscreen) {
+      try { await player.current.requestFullscreen(); return } catch { /* Use the in-page player. */ }
+    }
+    setTheater(true)
+  }
+
+  async function togglePlayback() {
+    const element = video.current
+    if (element.paused) {
+      try { await element.play() } catch {
+        setFailure(true)
+        setStatus('This video could not play. Try an H.264 MP4.')
+      }
+    } else element.pause()
+  }
+
   async function upload(file) {
     if (!file) return
     if (!/\.(mp4|webm|mov)$/i.test(file.name) || file.size > 50 * 1024 ** 2 || !file.size) {
@@ -173,7 +241,7 @@ export default function Roadframe() {
         frames.push(await vision.encode(read(decoder, 112)))
         if (current.signal.aborted) return
         if (frames.length > 12) frames.shift()
-        if (frames.length === 12 && (tick - 11) % 3 === 0) {
+        if (frames.length === 12) {
           const score = validScore(await vision.score(frames))
           if (current.signal.aborted) return
           setRows(previous => [...previous, { time: timestamp, score }])
@@ -262,7 +330,7 @@ export default function Roadframe() {
           if (frames.length > 12) frames.shift()
         }
         lastFrame = features
-        if (frames.length === 12 && now - lastScore >= .48) {
+        if (frames.length === 12 && now - lastScore >= STEP - .01) {
           const score = validScore(await vision.score(frames))
           if (current.signal.aborted) break
           lastScore = now
@@ -305,7 +373,7 @@ export default function Roadframe() {
   }
 
   const current = (live && scene !== 'road') ? undefined :
-    rows.findLast(row => row.time <= time + .015 && time - row.time < (live ? 1.5 : .55))
+    rows.findLast(row => row.time <= time + .001 && time - row.time < (live ? 1.5 : SCORE_HOLD))
   const level = current ? band(current.score) : -1
   const peak = rows.reduce((best, row) => !best || row.score > best.score ? row : best, null)
   const summary = live ? 'Live camera' : source.kind === 'sample' ? 'Sample replay' : 'Local file'
@@ -314,11 +382,14 @@ export default function Roadframe() {
   return <section className="roadframe" aria-label="Roadframe dashcam studio">
     <div className="rf-studio">
       <div className="rf-main">
-        <div className="rf-panel" ref={player}>
+        <div className={`rf-panel rf-player ${theater ? 'rf-theater' : ''}`} ref={player}>
           <div className="rf-bar"><h2>{source.name}</h2><span>{summary}</span></div>
           <div className="rf-video">
-            <video ref={video} playsInline muted controls={!live} preload="metadata"
+            <video ref={video} playsInline muted={live || muted} preload="metadata"
               poster={source.id ? asset(source.id + '.jpg') : undefined}
+              onPlay={() => setPlaying(true)}
+              onPause={() => setPlaying(false)}
+              onEnded={() => setPlaying(false)}
               onLoadedMetadata={event => {
                 setDuration(Number.isFinite(event.currentTarget.duration) ? event.currentTarget.duration : 0)
                 if (pendingSeek.current !== null) {
@@ -326,7 +397,7 @@ export default function Roadframe() {
                   pendingSeek.current = null
                 }
               }}
-              onTimeUpdate={event => { if (!live) setTime(event.currentTarget.currentTime) }}
+              onTimeUpdate={event => { if (!live && event.currentTarget.paused) setTime(event.currentTarget.currentTime) }}
               onSeeked={event => { if (!live) setTime(event.currentTarget.currentTime) }}
               onError={() => { if (!live && video.current?.hasAttribute('src')) { setFailure(true); setStatus('This video could not play. Try an H.264 MP4.') } }}/>
             <div className={`rf-score ${level === 3 ? 'rf-pulse' : ''}`} style={level >= 0 ? {'--score-color':palette[level], '--score-scale':1 + level * .07} : {}}>
@@ -335,13 +406,12 @@ export default function Roadframe() {
                 <i><i style={{width:display(current.score) + '%'}}/></i></> : <p>{note}</p>}
             </div>
           </div>
-          <div className="rf-bar rf-controls"><span>{stamp(time)}{!live && ' / ' + stamp(duration)}</span>
+          <div className="rf-bar rf-controls">
+            {!live && <button type="button" aria-label={playing ? 'Pause video' : 'Play video'} onClick={togglePlayback}>{playing ? '❚❚' : '▶'}</button>}
+            <span>{stamp(time)}{!live && ' / ' + stamp(duration)}</span>
             {!live && <input type="range" aria-label="Video position" min="0" max={duration || 0} step=".01" value={Math.min(time, duration)} onChange={event => seek(Number(event.target.value))}/>}
-            <button type="button" onClick={() => {
-              if (document.fullscreenElement) document.exitFullscreen().catch(() => {})
-              else if (player.current.requestFullscreen) player.current.requestFullscreen().catch(() => {})
-              else video.current.webkitEnterFullscreen?.()
-            }}>Fullscreen</button>
+            {!live && <button type="button" aria-label={muted ? 'Unmute video' : 'Mute video'} onClick={() => setMuted(value => !value)}>{muted ? 'Sound off' : 'Sound on'}</button>}
+            <button type="button" onClick={toggleFullscreen}>{fullscreen || theater ? 'Exit fullscreen' : 'Fullscreen'}</button>
           </div>
         </div>
         <div className="rf-panel"><div className="rf-bar"><h2>Risk timeline</h2><button type="button" disabled={!rows.length} onClick={download}>Download CSV ↓</button></div>

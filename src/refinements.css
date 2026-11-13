@@ -256,6 +256,10 @@ html {scroll-padding-top:90px;}
 .timeline-toggle:hover strong{color:var(--accent);}
 .timeline-toggle strong{transition:color .2s;}
 .timeline-tags{margin-top:24px;}
+.experience-layout{row-gap:0;}
+.timeline-item{grid-template-columns:55px minmax(0,1fr);}
+.timeline-content{overflow-wrap:anywhere;}
+@media(max-width:640px){.timeline-item{grid-template-columns:31px minmax(0,1fr);}}
 /* Theme control shows both accent AND full-surface palette choices. */
 .theme-dock{top:43%;filter:drop-shadow(0 8px 20px rgba(0,0,0,.1));}
 .theme-trigger{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:12px 0 0 12px;}
