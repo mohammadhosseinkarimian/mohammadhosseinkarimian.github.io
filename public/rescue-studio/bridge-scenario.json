@@ -1,0 +1,66 @@
+{
+  "version": 5,
+  "id": "bridge_rescue",
+  "nodes": 6,
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      4,
+      5
+    ]
+  ],
+  "barriers": [
+    [
+      1,
+      2
+    ]
+  ],
+  "refuges": [
+    5
+  ],
+  "units": [
+    {
+      "id": "fire_1",
+      "role": "fire",
+      "location": 0
+    },
+    {
+      "id": "ambulance_2",
+      "role": "ambulance",
+      "location": 0
+    },
+    {
+      "id": "police_3",
+      "role": "police",
+      "location": 1
+    }
+  ],
+  "civilians": [
+    {
+      "id": "civilian_1",
+      "location": 2,
+      "health": 3,
+      "phase": 0
+    }
+  ],
+  "collapsed": [
+    2
+  ],
+  "deadline": 10,
+  "hazards": 2
+}

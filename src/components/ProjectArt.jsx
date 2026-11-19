@@ -2,6 +2,7 @@ import React from 'react'
 
 export default function ProjectArt({ type = 'agents', large = false }) {
   const root = React.useId().replaceAll(':', '')
+  if (type === 'rescue-studio') return <div className="project-art project-art-rescue-studio" aria-hidden="true" style={{background: `linear-gradient(0deg,#13142088,transparent 60%), url(${import.meta.env.BASE_URL}rescue-studio/preview.jpg) center / cover`}}><div className="art-overlay-tag"><span className="art-tag-dot"/>RESCUE / VERIFIED STRATEGIES</div></div>
   if (type === 'roadframe') return <div className="project-art project-art-roadframe" aria-hidden="true" style={{background: `linear-gradient(0deg,#13142088,transparent 60%), url(${import.meta.env.BASE_URL}roadframe/traffic.jpg) center / cover`}}><div className="art-overlay-tag"><span className="art-tag-dot"/>DASHCAM / VISION</div></div>
   if (type === 'find-products') return <div className="project-art project-art-find-products" aria-hidden="true" style={{background: `linear-gradient(0deg,#13142088,transparent 60%), url(${import.meta.env.BASE_URL}find-products/sample.jpg) center / cover`}}><div className="art-overlay-tag"><span className="art-tag-dot"/>SHELF SCAN / OCR</div></div>
   return <div className={`project-art project-art-${type} ${large ? 'project-art-large' : ''}`} aria-hidden="true">

@@ -1,0 +1,1040 @@
+{
+  "scenario": {
+    "version": 5,
+    "id": "parallel_rescue",
+    "nodes": 8,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        7
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        6,
+        7
+      ]
+    ],
+    "barriers": [
+      [
+        1,
+        2
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "refuges": [
+      3,
+      7
+    ],
+    "units": [
+      {
+        "id": "fire_1",
+        "role": "fire",
+        "location": 0
+      },
+      {
+        "id": "fire_2",
+        "role": "fire",
+        "location": 4
+      },
+      {
+        "id": "ambulance_3",
+        "role": "ambulance",
+        "location": 0
+      },
+      {
+        "id": "ambulance_4",
+        "role": "ambulance",
+        "location": 4
+      },
+      {
+        "id": "police_5",
+        "role": "police",
+        "location": 1
+      },
+      {
+        "id": "police_6",
+        "role": "police",
+        "location": 5
+      }
+    ],
+    "civilians": [
+      {
+        "id": "civilian_1",
+        "location": 2,
+        "health": 3,
+        "phase": 0
+      },
+      {
+        "id": "civilian_2",
+        "location": 6,
+        "health": 3,
+        "phase": 0
+      }
+    ],
+    "deadline": 14,
+    "hazards": 1
+  },
+  "goal": "deliver",
+  "optimization": {
+    "status": "optimal",
+    "optimal": true,
+    "objective": "minimum worst-case completion turns",
+    "lower_bound": 6,
+    "upper_bound": 6,
+    "initial_upper_bound": 7
+  },
+  "verification": {
+    "status": "winning",
+    "worst_case_turns": 6,
+    "reachable_states": 19,
+    "transitions": 28
+  },
+  "policy": [
+    {
+      "state": {
+        "positions": [
+          0,
+          4,
+          0,
+          4,
+          1,
+          5
+        ],
+        "phases": [
+          0,
+          0
+        ],
+        "carriers": [
+          -1,
+          -1
+        ],
+        "health": [
+          3,
+          3
+        ],
+        "civilian_positions": [
+          2,
+          6
+        ],
+        "clock": 14,
+        "hazard": 1,
+        "blocked": 3
+      },
+      "actions": [
+        [
+          "move",
+          1
+        ],
+        [
+          "move",
+          5
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "clear",
+          0
+        ],
+        [
+          "clear",
+          1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          1,
+          5,
+          0,
+          4,
+          1,
+          5
+        ],
+        "phases": [
+          0,
+          0
+        ],
+        "carriers": [
+          -1,
+          -1
+        ],
+        "health": [
+          3,
+          3
+        ],
+        "civilian_positions": [
+          2,
+          6
+        ],
+        "clock": 13,
+        "hazard": 1,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "move",
+          2
+        ],
+        [
+          "move",
+          6
+        ],
+        [
+          "move",
+          1
+        ],
+        [
+          "move",
+          5
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          1,
+          5,
+          0,
+          4,
+          1,
+          5
+        ],
+        "phases": [
+          0,
+          0
+        ],
+        "carriers": [
+          -1,
+          -1
+        ],
+        "health": [
+          2,
+          3
+        ],
+        "civilian_positions": [
+          2,
+          6
+        ],
+        "clock": 13,
+        "hazard": 0,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "move",
+          2
+        ],
+        [
+          "move",
+          6
+        ],
+        [
+          "move",
+          1
+        ],
+        [
+          "move",
+          5
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          1,
+          5,
+          0,
+          4,
+          1,
+          5
+        ],
+        "phases": [
+          0,
+          0
+        ],
+        "carriers": [
+          -1,
+          -1
+        ],
+        "health": [
+          3,
+          2
+        ],
+        "civilian_positions": [
+          2,
+          6
+        ],
+        "clock": 13,
+        "hazard": 0,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "move",
+          2
+        ],
+        [
+          "move",
+          6
+        ],
+        [
+          "move",
+          1
+        ],
+        [
+          "move",
+          5
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          2,
+          6,
+          1,
+          5,
+          1,
+          5
+        ],
+        "phases": [
+          0,
+          0
+        ],
+        "carriers": [
+          -1,
+          -1
+        ],
+        "health": [
+          3,
+          3
+        ],
+        "civilian_positions": [
+          2,
+          6
+        ],
+        "clock": 12,
+        "hazard": 1,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "rescue",
+          0
+        ],
+        [
+          "rescue",
+          1
+        ],
+        [
+          "move",
+          2
+        ],
+        [
+          "move",
+          6
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          2,
+          6,
+          1,
+          5,
+          1,
+          5
+        ],
+        "phases": [
+          0,
+          0
+        ],
+        "carriers": [
+          -1,
+          -1
+        ],
+        "health": [
+          2,
+          3
+        ],
+        "civilian_positions": [
+          2,
+          6
+        ],
+        "clock": 12,
+        "hazard": 0,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "rescue",
+          0
+        ],
+        [
+          "rescue",
+          1
+        ],
+        [
+          "move",
+          2
+        ],
+        [
+          "move",
+          6
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          2,
+          6,
+          1,
+          5,
+          1,
+          5
+        ],
+        "phases": [
+          0,
+          0
+        ],
+        "carriers": [
+          -1,
+          -1
+        ],
+        "health": [
+          3,
+          2
+        ],
+        "civilian_positions": [
+          2,
+          6
+        ],
+        "clock": 12,
+        "hazard": 0,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "rescue",
+          0
+        ],
+        [
+          "rescue",
+          1
+        ],
+        [
+          "move",
+          2
+        ],
+        [
+          "move",
+          6
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          2,
+          6,
+          2,
+          6,
+          1,
+          5
+        ],
+        "phases": [
+          1,
+          1
+        ],
+        "carriers": [
+          -1,
+          -1
+        ],
+        "health": [
+          3,
+          3
+        ],
+        "civilian_positions": [
+          2,
+          6
+        ],
+        "clock": 11,
+        "hazard": 1,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "load",
+          0
+        ],
+        [
+          "load",
+          1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          2,
+          6,
+          2,
+          6,
+          1,
+          5
+        ],
+        "phases": [
+          1,
+          1
+        ],
+        "carriers": [
+          -1,
+          -1
+        ],
+        "health": [
+          2,
+          3
+        ],
+        "civilian_positions": [
+          2,
+          6
+        ],
+        "clock": 11,
+        "hazard": 0,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "load",
+          0
+        ],
+        [
+          "load",
+          1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          2,
+          6,
+          2,
+          6,
+          1,
+          5
+        ],
+        "phases": [
+          1,
+          1
+        ],
+        "carriers": [
+          -1,
+          -1
+        ],
+        "health": [
+          3,
+          2
+        ],
+        "civilian_positions": [
+          2,
+          6
+        ],
+        "clock": 11,
+        "hazard": 0,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "load",
+          0
+        ],
+        [
+          "load",
+          1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          2,
+          6,
+          2,
+          6,
+          1,
+          5
+        ],
+        "phases": [
+          2,
+          2
+        ],
+        "carriers": [
+          2,
+          3
+        ],
+        "health": [
+          3,
+          3
+        ],
+        "civilian_positions": [
+          2,
+          6
+        ],
+        "clock": 10,
+        "hazard": 1,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "move",
+          3
+        ],
+        [
+          "move",
+          7
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          2,
+          6,
+          2,
+          6,
+          1,
+          5
+        ],
+        "phases": [
+          2,
+          2
+        ],
+        "carriers": [
+          2,
+          3
+        ],
+        "health": [
+          2,
+          3
+        ],
+        "civilian_positions": [
+          2,
+          6
+        ],
+        "clock": 10,
+        "hazard": 0,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "move",
+          3
+        ],
+        [
+          "move",
+          7
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          2,
+          6,
+          2,
+          6,
+          1,
+          5
+        ],
+        "phases": [
+          2,
+          2
+        ],
+        "carriers": [
+          2,
+          3
+        ],
+        "health": [
+          3,
+          2
+        ],
+        "civilian_positions": [
+          2,
+          6
+        ],
+        "clock": 10,
+        "hazard": 0,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "move",
+          3
+        ],
+        [
+          "move",
+          7
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          2,
+          6,
+          3,
+          7,
+          1,
+          5
+        ],
+        "phases": [
+          2,
+          2
+        ],
+        "carriers": [
+          2,
+          3
+        ],
+        "health": [
+          3,
+          3
+        ],
+        "civilian_positions": [
+          3,
+          7
+        ],
+        "clock": 9,
+        "hazard": 1,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "unload",
+          0
+        ],
+        [
+          "unload",
+          1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          2,
+          6,
+          3,
+          7,
+          1,
+          5
+        ],
+        "phases": [
+          2,
+          2
+        ],
+        "carriers": [
+          2,
+          3
+        ],
+        "health": [
+          2,
+          3
+        ],
+        "civilian_positions": [
+          3,
+          7
+        ],
+        "clock": 9,
+        "hazard": 0,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "unload",
+          0
+        ],
+        [
+          "unload",
+          1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    },
+    {
+      "state": {
+        "positions": [
+          2,
+          6,
+          3,
+          7,
+          1,
+          5
+        ],
+        "phases": [
+          2,
+          2
+        ],
+        "carriers": [
+          2,
+          3
+        ],
+        "health": [
+          3,
+          2
+        ],
+        "civilian_positions": [
+          3,
+          7
+        ],
+        "clock": 9,
+        "hazard": 0,
+        "blocked": 0
+      },
+      "actions": [
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "unload",
+          0
+        ],
+        [
+          "unload",
+          1
+        ],
+        [
+          "stay",
+          -1
+        ],
+        [
+          "stay",
+          -1
+        ]
+      ]
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import { projects } from '../data/portfolio'
 const demos = {
   'accident-prediction': lazy(() => import('../components/roadframe/Roadframe')),
   'find-products': lazy(() => import('../components/find-products/FindProducts')),
+  'rescue-studio': lazy(() => import('../components/rescue-studio/RescueStudio')),
 }
 
 export default function ProjectDetail({slug}){

@@ -1,0 +1,172 @@
+Semantics=SingleAssignment;
+
+Agent Environment
+    Obsvars:
+        pos_0: 0 .. 5;
+        pos_1: 0 .. 5;
+        pos_2: 0 .. 5;
+        phase_0: 0 .. 3;
+        carrier_0: 0 .. 3;
+        health_0: 0 .. 4;
+        loc_0: 0 .. 5;
+        clock: 0 .. 5;
+        hazard: 0 .. 2;
+        blocked_0: boolean;
+    end Obsvars
+    Actions = {calm, harm_0};
+    Protocol:
+        clock > 0 and (health_0 > 0) and (phase_0 < 3): {calm};
+        clock > 0 and (health_0 > 0) and (phase_0 < 3) and hazard > 0 and phase_0 < 3: {harm_0};
+        Other: {calm};
+    end Protocol
+    Evolution:
+        pos_0 = 0 if Responder0.Action = move_0;
+        pos_0 = 1 if Responder0.Action = move_1;
+        pos_0 = 2 if Responder0.Action = move_2;
+        pos_0 = 3 if Responder0.Action = move_3;
+        pos_0 = 4 if Responder0.Action = move_4;
+        pos_0 = 5 if Responder0.Action = move_5;
+        pos_1 = 0 if Responder1.Action = move_0;
+        pos_1 = 1 if Responder1.Action = move_1;
+        pos_1 = 2 if Responder1.Action = move_2;
+        pos_1 = 3 if Responder1.Action = move_3;
+        pos_1 = 4 if Responder1.Action = move_4;
+        pos_1 = 5 if Responder1.Action = move_5;
+        pos_2 = 0 if Responder2.Action = move_0;
+        pos_2 = 1 if Responder2.Action = move_1;
+        pos_2 = 2 if Responder2.Action = move_2;
+        pos_2 = 3 if Responder2.Action = move_3;
+        pos_2 = 4 if Responder2.Action = move_4;
+        pos_2 = 5 if Responder2.Action = move_5;
+        blocked_0 = false if (Responder2.Action = clear_0);
+        health_0 = 0 if health_0 = 1 and Action = harm_0;
+        health_0 = 1 if health_0 = 2 and Action = harm_0;
+        health_0 = 2 if health_0 = 3 and Action = harm_0;
+        health_0 = 3 if health_0 = 4 and Action = harm_0;
+        phase_0 = 1 if phase_0 = 0 and clock > 0 and (health_0 > 0) and (phase_0 < 3) and (health_0 > 1 or (Action = calm)) and (Responder0.Action = rescue_0);
+        phase_0 = 2 if phase_0 = 1 and clock > 0 and (health_0 > 0) and (phase_0 < 3) and (health_0 > 1 or (Action = calm)) and (Responder1.Action = load_0);
+        carrier_0 = 1 if phase_0 = 1 and clock > 0 and (health_0 > 0) and (phase_0 < 3) and (health_0 > 1 or (Action = calm)) and Responder1.Action = load_0;
+        phase_0 = 3 if phase_0 = 2 and carrier_0 = 1 and clock > 0 and (health_0 > 0) and (phase_0 < 3) and (health_0 > 1 or (Action = calm)) and Responder1.Action = unload_0;
+        loc_0 = 0 if phase_0 = 2 and carrier_0 = 1 and Responder1.Action = move_0;
+        loc_0 = 1 if phase_0 = 2 and carrier_0 = 1 and Responder1.Action = move_1;
+        loc_0 = 2 if phase_0 = 2 and carrier_0 = 1 and Responder1.Action = move_2;
+        loc_0 = 3 if phase_0 = 2 and carrier_0 = 1 and Responder1.Action = move_3;
+        loc_0 = 4 if phase_0 = 2 and carrier_0 = 1 and Responder1.Action = move_4;
+        loc_0 = 5 if phase_0 = 2 and carrier_0 = 1 and Responder1.Action = move_5;
+        clock = 0 if clock = 1 and (health_0 > 0) and (phase_0 < 3);
+        clock = 1 if clock = 2 and (health_0 > 0) and (phase_0 < 3);
+        clock = 2 if clock = 3 and (health_0 > 0) and (phase_0 < 3);
+        clock = 3 if clock = 4 and (health_0 > 0) and (phase_0 < 3);
+        clock = 4 if clock = 5 and (health_0 > 0) and (phase_0 < 3);
+        hazard = 0 if hazard = 1 and (Action = harm_0);
+        hazard = 1 if hazard = 2 and (Action = harm_0);
+    end Evolution
+end Agent
+
+Agent Responder0
+    Vars:
+        dummy: boolean;
+    end Vars
+    Actions = {stay, move_0, move_1, move_2, move_3, move_4, move_5, rescue_0};
+    Protocol:
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3): {stay};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_0 = 0: {move_1};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_0 = 1: {move_0};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_0 = 1 and Environment.blocked_0 = false: {move_2};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_0 = 2 and Environment.blocked_0 = false: {move_1};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_0 = 2: {move_3};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_0 = 3: {move_2};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_0 = 3: {move_4};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_0 = 4: {move_3};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_0 = 4: {move_5};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_0 = 5: {move_4};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.phase_0 = 0 and Environment.pos_0 = Environment.loc_0: {rescue_0};
+        Other: {stay};
+    end Protocol
+    Evolution:
+        dummy = false if dummy = false;
+        dummy = true if dummy = true;
+    end Evolution
+end Agent
+
+Agent Responder1
+    Vars:
+        dummy: boolean;
+    end Vars
+    Actions = {stay, move_0, move_1, move_2, move_3, move_4, move_5, load_0, unload_0};
+    Protocol:
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3): {stay};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_1 = 0: {move_1};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_1 = 1: {move_0};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_1 = 1 and Environment.blocked_0 = false: {move_2};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_1 = 2 and Environment.blocked_0 = false: {move_1};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_1 = 2: {move_3};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_1 = 3: {move_2};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_1 = 3: {move_4};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_1 = 4: {move_3};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_1 = 4: {move_5};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_1 = 5: {move_4};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and ((Environment.phase_0 <> 2 or Environment.carrier_0 <> 1)) and Environment.phase_0 = 1 and Environment.pos_1 = Environment.loc_0: {load_0};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.phase_0 = 2 and Environment.carrier_0 = 1 and (Environment.pos_1 = 5): {unload_0};
+        Other: {stay};
+    end Protocol
+    Evolution:
+        dummy = false if dummy = false;
+        dummy = true if dummy = true;
+    end Evolution
+end Agent
+
+Agent Responder2
+    Vars:
+        dummy: boolean;
+    end Vars
+    Actions = {stay, move_0, move_1, move_2, move_3, move_4, move_5, clear_0};
+    Protocol:
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3): {stay};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_2 = 0: {move_1};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_2 = 1: {move_0};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_2 = 1 and Environment.blocked_0 = false: {move_2};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_2 = 2 and Environment.blocked_0 = false: {move_1};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_2 = 2: {move_3};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_2 = 3: {move_2};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_2 = 3: {move_4};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_2 = 4: {move_3};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_2 = 4: {move_5};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_2 = 5: {move_4};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_2 = 1 and Environment.blocked_0 = true: {clear_0};
+        Environment.clock > 0 and (Environment.health_0 > 0) and (Environment.phase_0 < 3) and Environment.pos_2 = 2 and Environment.blocked_0 = true: {clear_0};
+        Other: {stay};
+    end Protocol
+    Evolution:
+        dummy = false if dummy = false;
+        dummy = true if dummy = true;
+    end Evolution
+end Agent
+
+Evaluation
+    objective_eval if Environment.phase_0 >= 3 and Environment.health_0 > 0;
+end Evaluation
+
+InitStates
+    Environment.pos_0 = 0 and
+    Environment.pos_1 = 0 and
+    Environment.pos_2 = 1 and
+    Environment.phase_0 = 0 and
+    Environment.carrier_0 = 3 and
+    Environment.health_0 = 3 and
+    Environment.loc_0 = 2 and
+    Environment.clock = 5 and
+    Environment.hazard = 2 and
+    Environment.blocked_0 = true and
+    Responder0.dummy = false and
+    Responder1.dummy = false and
+    Responder2.dummy = false;
+end InitStates
+
+Groups
+    all = {Responder0, Responder1, Responder2};
+end Groups
+
+Formulae
+    <all> F objective_eval;
+end Formulae

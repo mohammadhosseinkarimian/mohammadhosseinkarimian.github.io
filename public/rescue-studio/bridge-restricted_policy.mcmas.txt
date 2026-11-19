@@ -1,0 +1,30 @@
+************************************************************************
+                       MCMAS v1.3.0 
+
+ This software comes with ABSOLUTELY NO WARRANTY, to the extent
+ permitted by applicable law. 
+
+ Please check http://vas.doc.ic.ac.uk/tools/mcmas/ for the latest release.
+ Please send any feedback to <mcmas@imperial.ac.uk>
+************************************************************************
+
+Command line: mcmas /mnt/c/Linux/ML/BDI_ATL_RescueML_v3/runs/studio_jobs/e6b6fddfb25d4107aab8ee0888335e40/restricted_policy.ispl
+
+/mnt/c/Linux/ML/BDI_ATL_RescueML_v3/runs/studio_jobs/e6b6fddfb25d4107aab8ee0888335e40/restricted_policy.ispl has been parsed successfully.
+Global syntax checking...
+1
+1
+1
+Done
+Encoding BDD parameters...
+Building partial transition relation...
+Building BDD for initial states...
+Building reachable state space...
+Checking formulae...
+Verifying properties...
+  Formula number 1: (<all>F objective_eval), is TRUE in the model
+done, 1 formulae successfully read and checked
+execution time = 0.066
+number of reachable states = 544
+BDD memory in use = 9390592
+

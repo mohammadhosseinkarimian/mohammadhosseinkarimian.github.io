@@ -1,0 +1,4 @@
+# Preserve exported verification artifacts byte for byte across platforms.
+public/rescue-studio/*.json -text
+public/rescue-studio/*.ispl -text
+public/rescue-studio/*.mcmas.txt -text whitespace=-blank-at-eol,-blank-at-eof
