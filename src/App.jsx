@@ -35,6 +35,13 @@ function DoorTransition({phase, onPanelEnd}) {
 }
 
 export default function App() {
+  useEffect(() => {
+    let secondFrame = 0
+    const firstFrame = requestAnimationFrame(() => {
+      secondFrame = requestAnimationFrame(() => window.dispatchEvent(new Event('portfolio-ready')))
+    })
+    return () => { cancelAnimationFrame(firstFrame); cancelAnimationFrame(secondFrame) }
+  }, [])
   const [path, setPath] = useState(readRoute)
   const [phase, setPhase] = useState('idle')
   const pathRef = useRef(path)

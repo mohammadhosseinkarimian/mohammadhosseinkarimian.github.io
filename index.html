@@ -4,7 +4,48 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f6f5f0" />
-    <script>try{document.documentElement.dataset.theme=localStorage.getItem('mk-theme')||'pearl'}catch{document.documentElement.dataset.theme='pearl'}</script>
+    <script>try{const theme=localStorage.getItem('mk-theme');document.documentElement.dataset.theme=['pearl','violet','blue','coral','lime'].includes(theme)?theme:'pearl'}catch{document.documentElement.dataset.theme='pearl'}document.documentElement.classList.add('boot-pending')</script>
+    <style>
+      :root{--boot-bg:#f7f7f4;--boot-ink:#182437;--boot-accent:#535ac9;--boot-mint:#287d71}
+      :root[data-theme='violet']{--boot-bg:#0b0d13;--boot-ink:#f5f3ff;--boot-accent:#ad99ff;--boot-mint:#ceff91}
+      :root[data-theme='blue']{--boot-bg:#081524;--boot-ink:#eef7ff;--boot-accent:#8ecfff;--boot-mint:#bce8d7}
+      :root[data-theme='coral']{--boot-bg:#fff8f2;--boot-ink:#3b2d33;--boot-accent:#ab4e3c;--boot-mint:#547760}
+      :root[data-theme='lime']{--boot-bg:#101a14;--boot-ink:#f4faef;--boot-accent:#c9ef8f;--boot-mint:#b6d7cf}
+      html.boot-pending{overflow:hidden;background:var(--boot-bg)}
+      #site-loader{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;background:var(--boot-bg);color:var(--boot-ink);font-family:'DM Sans',system-ui,sans-serif;transition:opacity .65s ease,visibility .65s;isolation:isolate}
+      #site-loader.boot-complete{opacity:0;visibility:hidden;pointer-events:none}
+      .boot-composition{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px;max-width:100%;position:relative}
+      .boot-monogram{font-size:13px;letter-spacing:.22em;font-weight:700;margin-bottom:42px;color:var(--boot-accent)}
+      .boot-sculpture{width:244px;height:244px;position:relative;perspective:750px;display:grid;place-items:center}
+      .boot-sculpture:before{content:'';position:absolute;width:210px;height:210px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--boot-accent) 16%,transparent),transparent 68%);filter:blur(12px)}
+      .boot-object{width:140px;height:140px;position:relative;transform-style:preserve-3d;animation:boot-tumble 9s linear infinite;will-change:transform}
+      .boot-ribbon{position:absolute;inset:0;border:8px solid var(--boot-accent);border-radius:44px 12px 44px 12px;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--boot-ink) 20%,transparent),0 0 0 1px color-mix(in srgb,var(--boot-accent) 18%,transparent);transform-style:preserve-3d;backface-visibility:visible}
+      .boot-ribbon:before,.boot-ribbon:after{content:'';position:absolute;width:12px;height:12px;background:var(--boot-mint);border:3px solid var(--boot-bg);border-radius:4px;box-shadow:0 0 16px color-mix(in srgb,var(--boot-mint) 35%,transparent)}
+      .boot-ribbon:before{left:0;top:3px}.boot-ribbon:after{right:0;bottom:3px}
+      .boot-ribbon-a{transform:rotateZ(45deg)}
+      .boot-ribbon-b{transform:rotateY(90deg) rotateZ(45deg);border-color:color-mix(in srgb,var(--boot-accent) 65%,var(--boot-mint))}
+      .boot-ribbon-c{transform:rotateX(90deg) rotateZ(45deg);border-color:var(--boot-mint)}
+      .boot-core{position:absolute;inset:49px;transform-style:preserve-3d;animation:boot-core 4s ease-in-out infinite}
+      .boot-core i{position:absolute;inset:0;background:linear-gradient(135deg,var(--boot-accent),var(--boot-mint));border:1px solid color-mix(in srgb,var(--boot-bg) 40%,transparent);border-radius:5px;opacity:.9}
+      .boot-core i:nth-child(1){transform:translateZ(21px)}.boot-core i:nth-child(2){transform:rotateY(90deg) translateZ(21px)}.boot-core i:nth-child(3){transform:rotateX(90deg) translateZ(21px)}.boot-core i:nth-child(4){transform:rotateY(180deg) translateZ(21px)}.boot-core i:nth-child(5){transform:rotateY(-90deg) translateZ(21px)}.boot-core i:nth-child(6){transform:rotateX(-90deg) translateZ(21px)}
+      .boot-orbit{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform:rotate(-90deg);fill:none;stroke-width:1}
+      .boot-track{stroke:var(--boot-accent);opacity:.14}
+      .boot-trace{stroke:var(--boot-accent);stroke-width:2;stroke-linecap:round;stroke-dasharray:20 80;animation:boot-trace 3s ease-in-out infinite}
+      .boot-ready .boot-trace{animation:none;stroke-dasharray:100 0;transition:stroke-dasharray .35s ease}
+      .boot-shadow{width:100px;height:12px;background:var(--boot-accent);opacity:.13;filter:blur(10px);border-radius:50%;margin:18px 0 32px;animation:boot-shadow 4s ease-in-out infinite}
+      .boot-title{font:500 25px/1.3 'Space Grotesk','DM Sans',system-ui,sans-serif;letter-spacing:-.055em;margin:0}
+      .boot-title em{font-family:Georgia,serif;font-weight:400;color:var(--boot-accent)}
+      #boot-status{margin:14px 0 0;font:11px/1.6 'DM Mono',monospace;letter-spacing:.13em;text-transform:uppercase;opacity:.65}
+      #boot-retry{display:none;margin-top:18px;border:1px solid var(--boot-accent);border-radius:30px;padding:10px 18px;background:transparent;color:var(--boot-ink);font:14px system-ui;cursor:pointer}
+      #boot-retry:focus-visible{outline:2px solid var(--boot-mint);outline-offset:4px}
+      #site-loader.boot-stalled #boot-retry{display:block}
+      @keyframes boot-tumble{from{transform:rotateX(58deg) rotateY(-26deg) rotateZ(0)}to{transform:rotateX(418deg) rotateY(334deg) rotateZ(360deg)}}
+      @keyframes boot-core{0%,100%{transform:scale(.8) rotateX(-15deg) rotateY(0)}50%{transform:scale(1.04) rotateX(30deg) rotateY(90deg)}}
+      @keyframes boot-trace{0%{stroke-dashoffset:100;stroke-dasharray:12 88}50%{stroke-dasharray:40 60}100%{stroke-dashoffset:0;stroke-dasharray:12 88}}
+      @keyframes boot-shadow{0%,100%{transform:scaleX(.8);opacity:.1}50%{transform:scaleX(1.2);opacity:.18}}
+      @media(max-width:480px){.boot-sculpture{width:212px;height:212px}.boot-monogram{margin-bottom:28px}.boot-title{font-size:23px}.boot-shadow{margin-bottom:26px}}
+      @media(prefers-reduced-motion:reduce){#site-loader{transition-duration:.15s}#site-loader *{animation:none!important}.boot-object{transform:rotateX(58deg) rotateY(-26deg) rotateZ(25deg)}}
+    </style>
     <meta name="description" content="MohammadHossein Karimian is a machine learning engineer, AI researcher and full-stack developer building intelligent systems and expressive digital products." />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="MohammadHossein Karimian | AI Researcher & ML Engineer" />
@@ -13,11 +54,48 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <title>MohammadHossein Karimian | AI Researcher & ML Engineer</title>
   </head>
   <body>
+    <div id="site-loader" role="status" aria-live="polite" aria-label="Loading portfolio">
+      <div class="boot-composition">
+        <div class="boot-monogram" aria-hidden="true">M.K / SYSTEMS IN MOTION</div>
+        <div class="boot-sculpture" aria-hidden="true">
+          <svg class="boot-orbit" viewBox="0 0 244 244"><rect class="boot-track" x="7" y="7" width="230" height="230" rx="74" pathLength="100"/><rect class="boot-trace" x="7" y="7" width="230" height="230" rx="74" pathLength="100"/></svg>
+          <div class="boot-object"><div class="boot-ribbon boot-ribbon-a"></div><div class="boot-ribbon boot-ribbon-b"></div><div class="boot-ribbon boot-ribbon-c"></div><div class="boot-core"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        </div>
+        <div class="boot-shadow" aria-hidden="true"></div>
+        <p class="boot-title">Ideas, <em>coming together.</em></p>
+        <p id="boot-status">Preparing your workspace</p>
+        <button id="boot-retry" type="button">Reload portfolio</button>
+      </div>
+    </div>
     <div id="root"></div>
+    <script>
+      (()=>{
+        const loader=document.getElementById('site-loader'),root=document.getElementById('root'),status=document.getElementById('boot-status');
+        const began=performance.now();let completed=false;
+        root.inert=true;
+        const stalled=setTimeout(()=>{if(!completed){loader.classList.add('boot-stalled');status.textContent='Taking a little longer to connect'}},12000);
+        document.getElementById('boot-retry').addEventListener('click',()=>location.reload());
+        window.addEventListener('portfolio-ready',async()=>{
+          if(completed)return;completed=true;clearTimeout(stalled);
+          const fonts=document.fonts?document.fonts.ready:Promise.resolve();
+          await Promise.race([fonts,new Promise(resolve=>setTimeout(resolve,1200))]);
+          const delay=Math.max(0,550-(performance.now()-began));
+          setTimeout(()=>{
+            status.textContent='Ready to explore';loader.classList.add('boot-ready');
+            setTimeout(()=>{
+              root.inert=false;document.documentElement.classList.remove('boot-pending');
+              loader.classList.add('boot-complete');
+              setTimeout(()=>loader.remove(),700);
+            },window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:300);
+          },delay);
+        },{once:true});
+      })();
+    </script>
+    <noscript><style>#site-loader{display:none}</style><p style="padding:24px;font-family:system-ui">Please enable JavaScript to explore this interactive portfolio.</p></noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
